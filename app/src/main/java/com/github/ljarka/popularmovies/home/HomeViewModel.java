@@ -4,33 +4,44 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
 import com.github.ljarka.popularmovies.home.model.service.MovieItem;
+import com.github.ljarka.popularmovies.home.model.service.MoviesResult;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
-import com.github.ljarka.popularmovies.home.network.PopularMoviesService;
+import com.github.ljarka.popularmovies.home.network.MoviesService;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
+import io.reactivex.ObservableTransformer;
 
 public class HomeViewModel extends ViewModel {
-    private PopularMoviesService popularMoviesService;
+    private MoviesService moviesService;
 
     @Inject
-    public HomeViewModel(PopularMoviesService popularMoviesService) {
-        this.popularMoviesService = popularMoviesService;
+    HomeViewModel(MoviesService moviesService) {
+        this.moviesService = moviesService;
     }
 
-    public Single<List<MovieItemUi>> getPopularMovies() {
-        return popularMoviesService.getPopularMovies()
-                .flatMap(popularMoviesResult -> Observable.fromIterable(popularMoviesResult.getResults()))
-                .map(this::convertToUiModel)
-                .toList();
+    Observable<List<MovieItemUi>> getPopularMovies() {
+        return moviesService.getPopularMovies()
+                .compose(transformResultToUiModel());
+    }
+
+    Observable<List<MovieItemUi>> getTopRatedMovies() {
+        return moviesService.getTopRatedMovies()
+                .compose(transformResultToUiModel());
+    }
+
+    ObservableTransformer<MoviesResult, List<MovieItemUi>> transformResultToUiModel() {
+        return upstream -> upstream.flatMap(popularMoviesResult -> Observable.fromIterable(popularMoviesResult.getResults()))
+                .map(HomeViewModel.this::convertItemToUiModel)
+                .toList()
+                .toObservable();
     }
 
     @NonNull
-    private MovieItemUi convertToUiModel(MovieItem movieItem) {
+    private MovieItemUi convertItemToUiModel(MovieItem movieItem) {
         return new MovieItemUi(createPosterUrl(movieItem));
     }
 

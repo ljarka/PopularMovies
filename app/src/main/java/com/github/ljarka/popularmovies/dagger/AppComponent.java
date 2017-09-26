@@ -3,6 +3,7 @@ package com.github.ljarka.popularmovies.dagger;
 import android.app.Application;
 
 import com.github.ljarka.popularmovies.PopularMoviesApplication;
+import com.github.ljarka.popularmovies.home.HomeActivityBuilder;
 
 import javax.inject.Singleton;
 
@@ -11,7 +12,8 @@ import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 
 @Singleton
-@Component(modules = {AndroidInjectionModule.class, AppModule.class, ActivityBuilder.class})
+@Component(modules = {AndroidInjectionModule.class, AppModule.class, HomeActivityBuilder.class,
+        ViewModelBuilder.class})
 public interface AppComponent {
 
     @Component.Builder

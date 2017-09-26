@@ -3,7 +3,7 @@ package com.github.ljarka.popularmovies.home.model.service;
 import java.util.List;
 import java.util.Objects;
 
-public class PopularMoviesResult {
+public class MoviesResult {
     private int page;
     private int totalResults;
     private int totalPages;
@@ -29,7 +29,7 @@ public class PopularMoviesResult {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PopularMoviesResult that = (PopularMoviesResult) o;
+        MoviesResult that = (MoviesResult) o;
         return page == that.page &&
                 totalResults == that.totalResults &&
                 totalPages == that.totalPages &&

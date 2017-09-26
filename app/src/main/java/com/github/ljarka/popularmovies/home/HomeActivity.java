@@ -35,7 +35,8 @@ public class HomeActivity extends AppCompatActivity {
                 viewModelFactory).get(HomeViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2,
+        recyclerView.setLayoutManager(new GridLayoutManager(this,
+                getResources().getInteger(R.integer.span_count),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
         adapter = new MoviesRecyclerViewAdapter();

@@ -10,8 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 import com.github.ljarka.popularmovies.R;
+import com.github.ljarka.popularmovies.detail.DetailActivity;
+import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
 
 import javax.inject.Inject;
 
@@ -19,7 +20,7 @@ import dagger.android.AndroidInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements MoviesRecyclerViewAdapter.OnMovieItemClickListener {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -34,16 +35,20 @@ public class HomeActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this,
                 viewModelFactory).get(HomeViewModel.class);
 
+        initRecyclerView();
+        loadPopularMovies();
+
+    }
+
+    private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this,
                 getResources().getInteger(R.integer.span_count),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
         adapter = new MoviesRecyclerViewAdapter();
+        adapter.setOnMovieItemClickListener(this);
         recyclerView.setAdapter(adapter);
-
-        loadPopularMovies();
-
     }
 
     private void loadPopularMovies() {
@@ -80,5 +85,10 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onMovieItemClick(MovieItemUi movieItemUi) {
+        startActivity(DetailActivity.createStartIntent(this, movieItemUi));
     }
 }

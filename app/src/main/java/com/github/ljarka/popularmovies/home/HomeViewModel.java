@@ -42,7 +42,14 @@ public class HomeViewModel extends ViewModel {
 
     @NonNull
     private MovieItemUi convertItemToUiModel(MovieItem movieItem) {
-        return new MovieItemUi(createPosterUrl(movieItem));
+        return MovieItemUi
+                .builder()
+                .withPoster(createPosterUrl(movieItem))
+                .withTitle(movieItem.getTitle())
+                .withOverview(movieItem.getOverview())
+                .withReleaseDate(movieItem.getReleaseDate())
+                .withUserRating(String.valueOf(movieItem.getVoteAverage()))
+                .build();
     }
 
     private String createPosterUrl(MovieItem movieItem) {

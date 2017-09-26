@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.github.ljarka.popularmovies.BuildConfig;
+import com.github.ljarka.popularmovies.home.network.PopularMoviesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -26,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.github.ljarka.popularmovies.BuildConfig.THE_MOVIE_DB_API_KEY;
 import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
-@Module
+@Module(includes = ViewModelModule.class)
 public class AppModule {
 
     @Provides
@@ -60,6 +61,11 @@ public class AppModule {
         return new OkHttpClient.Builder()
                 .addInterceptor(new AppendApiKeyInterceptor())
                 .build();
+    }
+
+    @Provides
+    PopularMoviesService providePopularMoviesService(Retrofit retrofit) {
+        return retrofit.create(PopularMoviesService.class);
     }
 
     public static class AppendApiKeyInterceptor implements Interceptor {

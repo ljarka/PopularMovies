@@ -1,4 +1,4 @@
-package com.github.ljarka.popularmovies.home.model;
+package com.github.ljarka.popularmovies.home.model.service;
 
 import java.util.Arrays;
 import java.util.Objects;

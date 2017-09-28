@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.github.ljarka.popularmovies.GlideApp;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
 
@@ -37,7 +37,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
 
     @Override
     public void onBindViewHolder(MoviesViewHolder holder, int position) {
-        Glide.with(holder.image.getContext())
+        GlideApp.with(holder.image.getContext())
                 .load(items.get(position).getPoster())
                 .into(holder.image);
     }
@@ -52,14 +52,14 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         notifyDataSetChanged();
     }
 
-    public void setOnMovieItemClickListener(@Nullable OnMovieItemClickListener listener) {
+    void setOnMovieItemClickListener(@Nullable OnMovieItemClickListener listener) {
         this.listener = Optional.ofNullable(listener).orElse(EMPTY_LISTENER);
     }
 
     class MoviesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView image;
 
-        public MoviesViewHolder(View itemView) {
+        MoviesViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);

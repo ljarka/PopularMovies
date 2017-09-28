@@ -33,7 +33,7 @@ public class HomeViewModel extends ViewModel {
                 .compose(transformResultToUiModel());
     }
 
-    ObservableTransformer<MoviesResult, List<MovieItemUi>> transformResultToUiModel() {
+    private ObservableTransformer<MoviesResult, List<MovieItemUi>> transformResultToUiModel() {
         return upstream -> upstream.flatMap(popularMoviesResult -> Observable.fromIterable(popularMoviesResult.getResults()))
                 .map(HomeViewModel.this::convertItemToUiModel)
                 .toList()

@@ -19,10 +19,10 @@ import javax.annotation.Nullable;
 
 public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecyclerViewAdapter.MoviesViewHolder> {
     public interface OnMovieItemClickListener {
-        void onMovieItemClick(MovieItemUi movieItemUi);
+        void onMovieItemClick(MovieItemUi movieItemUi, View view);
     }
 
-    private static final OnMovieItemClickListener EMPTY_LISTENER = movieItemUi -> {
+    private static final OnMovieItemClickListener EMPTY_LISTENER = (movieItemUi, view) -> {
         //empty
     };
 
@@ -67,7 +67,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
 
         @Override
         public void onClick(View view) {
-            listener.onMovieItemClick(items.get(getAdapterPosition()));
+            listener.onMovieItemClick(items.get(getAdapterPosition()), image);
         }
     }
 }

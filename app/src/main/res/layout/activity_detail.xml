@@ -23,17 +23,18 @@
             android:layout_marginTop="8dp"
             android:text="@{movieItem.title}"
             android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@+id/movie_poster"
+            app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Titanic" />
 
         <ImageView
-            android:id="@+id/movie_poster"
+            android:id="@+id/image"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
+            android:transitionName="@string/imageTransitionName"
             app:imageUrl="@{movieItem.poster}"
             app:layout_constraintDimensionRatio="9:16"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +51,7 @@
             android:text="@{movieItem.overview}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_poster"
+            app:layout_constraintTop_toBottomOf="@+id/image"
             tools:text="@tools:sample/lorem/random" />
 
         <TextView
@@ -70,7 +71,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text='@{movieItem.userRating+"/10"}'
-            app:layout_constraintStart_toEndOf="@+id/movie_poster"
+            app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="6.5/10" />
     </android.support.constraint.ConstraintLayout>

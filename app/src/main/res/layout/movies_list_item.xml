@@ -10,5 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="310dp"
         android:adjustViewBounds="true"
+        android:transitionName="@string/imageTransitionName"
         app:layout_constraintDimensionRatio="9:16" />
 </android.support.constraint.ConstraintLayout>

@@ -3,12 +3,14 @@ package com.github.ljarka.popularmovies.home;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.detail.DetailActivity;
@@ -88,7 +90,9 @@ public class HomeActivity extends AppCompatActivity implements MoviesRecyclerVie
     }
 
     @Override
-    public void onMovieItemClick(MovieItemUi movieItemUi) {
-        startActivity(DetailActivity.createStartIntent(this, movieItemUi));
+    public void onMovieItemClick(MovieItemUi movieItemUi, View view) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, view, getString(R.string.imageTransitionName));
+        startActivity(DetailActivity.createStartIntent(this, movieItemUi), options.toBundle());
     }
 }

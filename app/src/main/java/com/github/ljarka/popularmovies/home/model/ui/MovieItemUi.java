@@ -10,14 +10,15 @@ public class MovieItemUi implements Parcelable {
     private String overview;
     private String userRating;
     private String releaseDate;
+    private String backdrop;
 
-    private MovieItemUi(String poster, String title, String overview, String userRating,
-                        String releaseDate) {
+    private MovieItemUi(String poster, String title, String overview, String userRating, String releaseDate, String backdrop) {
         this.poster = poster;
         this.title = title;
         this.overview = overview;
         this.userRating = userRating;
         this.releaseDate = releaseDate;
+        this.backdrop = backdrop;
     }
 
     protected MovieItemUi(Parcel in) {
@@ -26,6 +27,7 @@ public class MovieItemUi implements Parcelable {
         overview = in.readString();
         userRating = in.readString();
         releaseDate = in.readString();
+        backdrop = in.readString();
     }
 
     public static final Creator<MovieItemUi> CREATOR = new Creator<MovieItemUi>() {
@@ -60,6 +62,10 @@ public class MovieItemUi implements Parcelable {
         return poster;
     }
 
+    public String getBackdrop() {
+        return backdrop;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -76,6 +82,7 @@ public class MovieItemUi implements Parcelable {
         parcel.writeString(overview);
         parcel.writeString(userRating);
         parcel.writeString(releaseDate);
+        parcel.writeString(backdrop);
     }
 
     public static class Builder {
@@ -84,6 +91,7 @@ public class MovieItemUi implements Parcelable {
         private String overview;
         private String userRating;
         private String releaseDate;
+        private String backdrop;
 
         public Builder withPoster(String poster) {
             this.poster = poster;
@@ -110,8 +118,13 @@ public class MovieItemUi implements Parcelable {
             return this;
         }
 
+        public Builder withBackdrop(String backdrop) {
+            this.backdrop = backdrop;
+            return this;
+        }
+
         public MovieItemUi build() {
-            return new MovieItemUi(poster, title, overview, userRating, releaseDate);
+            return new MovieItemUi(poster, title, overview, userRating, releaseDate, backdrop);
         }
     }
 }

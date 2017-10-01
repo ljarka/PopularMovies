@@ -21,11 +21,13 @@ public class DetailActivity extends AppCompatActivity implements ImageBindingCom
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityDetailBinding binding = DataBindingUtil.setContentView(this,
-                R.layout.activity_detail, new ImageBindingComponent(this));
+        ActivityDetailBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_detail, new ImageBindingComponent(this));
+        setSupportActionBar(findViewById(R.id.toolbar));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
         binding.setMovieItem(getIntent().getParcelableExtra(EXTRA_MOVIE_ITEM));
         supportPostponeEnterTransition();
@@ -42,8 +44,7 @@ public class DetailActivity extends AppCompatActivity implements ImageBindingCom
     }
 
     public static Intent createStartIntent(Context context, @NonNull MovieItemUi movieItemUi) {
-        return new Intent(context, DetailActivity.class)
-                .putExtra(EXTRA_MOVIE_ITEM, movieItemUi);
+        return new Intent(context, DetailActivity.class).putExtra(EXTRA_MOVIE_ITEM, movieItemUi);
     }
 
     @Override

@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class MovieItemUi implements Parcelable {
-
+    private int id;
     private String poster;
     private String title;
     private String overview;
@@ -12,7 +12,9 @@ public class MovieItemUi implements Parcelable {
     private String releaseDate;
     private String backdrop;
 
-    private MovieItemUi(String poster, String title, String overview, String userRating, String releaseDate, String backdrop) {
+    private MovieItemUi(int id, String poster, String title, String overview, String userRating, String releaseDate,
+            String backdrop) {
+        this.id = id;
         this.poster = poster;
         this.title = title;
         this.overview = overview;
@@ -22,6 +24,7 @@ public class MovieItemUi implements Parcelable {
     }
 
     protected MovieItemUi(Parcel in) {
+        id = in.readInt();
         poster = in.readString();
         title = in.readString();
         overview = in.readString();
@@ -66,6 +69,10 @@ public class MovieItemUi implements Parcelable {
         return backdrop;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -77,6 +84,7 @@ public class MovieItemUi implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(poster);
         parcel.writeString(title);
         parcel.writeString(overview);
@@ -86,12 +94,18 @@ public class MovieItemUi implements Parcelable {
     }
 
     public static class Builder {
+        private int id;
         private String poster;
         private String title;
         private String overview;
         private String userRating;
         private String releaseDate;
         private String backdrop;
+
+        public Builder withId(int id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder withPoster(String poster) {
             this.poster = poster;
@@ -124,7 +138,7 @@ public class MovieItemUi implements Parcelable {
         }
 
         public MovieItemUi build() {
-            return new MovieItemUi(poster, title, overview, userRating, releaseDate, backdrop);
+            return new MovieItemUi(id, poster, title, overview, userRating, releaseDate, backdrop);
         }
     }
 }

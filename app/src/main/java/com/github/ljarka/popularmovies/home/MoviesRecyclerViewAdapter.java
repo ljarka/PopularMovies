@@ -1,6 +1,8 @@
 package com.github.ljarka.popularmovies.home;
 
-
+import android.arch.paging.PagedListAdapter;
+import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.DiffCallback;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +13,11 @@ import com.github.ljarka.popularmovies.GlideApp;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
 
-public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecyclerViewAdapter.MoviesViewHolder> {
+public class MoviesRecyclerViewAdapter extends PagedListAdapter<MovieItemUi, MoviesRecyclerViewAdapter.MoviesViewHolder> {
     public interface OnMovieItemClickListener {
         void onMovieItemClick(MovieItemUi movieItemUi, View view);
     }
@@ -26,30 +26,20 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         //empty
     };
 
-    private List<MovieItemUi> items = new ArrayList<>();
     private OnMovieItemClickListener listener = EMPTY_LISTENER;
+
+    public MoviesRecyclerViewAdapter() {
+        super(new MyDiffCallback());
+    }
 
     @Override
     public MoviesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MoviesViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.movies_list_item, parent, false));
+        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movies_list_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(MoviesViewHolder holder, int position) {
-        GlideApp.with(holder.image.getContext())
-                .load(items.get(position).getPoster())
-                .into(holder.image);
-    }
-
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-
-    void setItems(List<MovieItemUi> items) {
-        this.items = items;
-        notifyDataSetChanged();
+        GlideApp.with(holder.image.getContext()).load(getItem(position).getPoster()).into(holder.image);
     }
 
     void setOnMovieItemClickListener(@Nullable OnMovieItemClickListener listener) {
@@ -67,7 +57,19 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
 
         @Override
         public void onClick(View view) {
-            listener.onMovieItemClick(items.get(getAdapterPosition()), image);
+            listener.onMovieItemClick(getItem(getAdapterPosition()), image);
+        }
+    }
+
+    private static class MyDiffCallback extends DiffCallback<MovieItemUi> {
+        @Override
+        public boolean areItemsTheSame(@NonNull MovieItemUi oldItem, @NonNull MovieItemUi newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull MovieItemUi oldItem, @NonNull MovieItemUi newItem) {
+            return oldItem.equals(newItem);
         }
     }
 }

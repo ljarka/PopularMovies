@@ -1,5 +1,8 @@
 package com.github.ljarka.popularmovies.home;
 
+import static com.github.ljarka.popularmovies.home.network.MoviesService.POPULAR;
+import static com.github.ljarka.popularmovies.home.network.MoviesService.TOP_RATED;
+
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -16,14 +19,12 @@ import android.widget.ViewAnimator;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.detail.DetailActivity;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
+import com.github.ljarka.popularmovies.home.network.MoviesService;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class HomeActivity extends AppCompatActivity implements MoviesRecyclerViewAdapter.OnMovieItemClickListener {
 
@@ -46,45 +47,33 @@ public class HomeActivity extends AppCompatActivity implements MoviesRecyclerVie
         errorView = findViewById(R.id.tv_loading_error);
         progressView = findViewById(R.id.progress_view);
 
-        viewModel = ViewModelProviders.of(this,
-                viewModelFactory).get(HomeViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
 
         initRecyclerView();
-        loadPopularMovies();
+        loadMovies(POPULAR);
     }
 
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,
-                getResources().getInteger(R.integer.span_count),
-                LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(
+                new GridLayoutManager(this, getResources().getInteger(R.integer.span_count), LinearLayoutManager.VERTICAL,
+                        false));
         recyclerView.setHasFixedSize(true);
         adapter = new MoviesRecyclerViewAdapter();
         adapter.setOnMovieItemClickListener(this);
         recyclerView.setAdapter(adapter);
     }
 
-    private void loadPopularMovies() {
+    private void loadMovies(@MoviesService.SortBy String sortBy) {
         showProgress();
-        Disposable disposable = viewModel.getPopularMovies()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                    showContent();
-                    adapter.setItems(items);
-                }, throwable -> showError());
-        compositeDisposable.add(disposable);
-    }
-
-    private void loadTopRatedMovies() {
-        Disposable disposable = viewModel.getTopRatedMovies()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                    showContent();
-                    adapter.setItems(items);
-                }, throwable -> showError());
-        compositeDisposable.add(disposable);
+        viewModel.getMovies(sortBy).observe(this, pagedList -> {
+            if (pagedList.isEmpty()) {
+                showError();
+            } else {
+                showContent();
+                adapter.setList(pagedList);
+            }
+        });
     }
 
     private void showError() {
@@ -108,10 +97,10 @@ public class HomeActivity extends AppCompatActivity implements MoviesRecyclerVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (R.id.action_popular == item.getItemId()) {
-            loadPopularMovies();
+            loadMovies(POPULAR);
             return true;
         } else if (R.id.action_top_rated == item.getItemId()) {
-            loadTopRatedMovies();
+            loadMovies(TOP_RATED);
             return true;
         }
         return super.onOptionsItemSelected(item);

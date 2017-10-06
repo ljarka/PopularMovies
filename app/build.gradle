@@ -17,10 +17,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_API_URL", '"https://api.themoviedb.org/3/movie/"'
+            buildConfigField "String", "BASE_API_URL", '"https://api.themoviedb.org/3/"'
         }
         debug {
-            buildConfigField "String", "BASE_API_URL", '"https://api.themoviedb.org/3/movie/"'
+            buildConfigField "String", "BASE_API_URL", '"https://api.themoviedb.org/3/"'
         }
     }
     compileOptions {
@@ -52,4 +52,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
+    compile 'android.arch.paging:runtime:1.0.0-alpha2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 }

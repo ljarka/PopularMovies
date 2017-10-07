@@ -11,7 +11,7 @@ import android.support.annotation.StringDef;
 
 import com.github.ljarka.popularmovies.home.model.service.MovieItem;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
-import com.github.ljarka.popularmovies.home.network.MoviesService;
+import com.github.ljarka.popularmovies.home.network.MoviesListService;
 
 import java.lang.annotation.Retention;
 import java.util.Collections;
@@ -32,13 +32,13 @@ class MoviesDataProvider extends LivePagedListProvider<Integer, MovieItemUi> {
     private static final String BIG = "w500";
     private static final String ORIGINAL = "original";
 
-    private MoviesService moviesService;
+    private MoviesListService moviesListService;
 
-    @MoviesService.SortBy
+    @MoviesListService.SortBy
     private String sortBy;
 
-    MoviesDataProvider(@MoviesService.SortBy String sortBy, MoviesService moviesService) {
-        this.moviesService = moviesService;
+    MoviesDataProvider(@MoviesListService.SortBy String sortBy, MoviesListService moviesListService) {
+        this.moviesListService = moviesListService;
         this.sortBy = sortBy;
     }
 
@@ -52,7 +52,7 @@ class MoviesDataProvider extends LivePagedListProvider<Integer, MovieItemUi> {
 
             @Override
             public List<MovieItemUi> loadRange(int startPosition, int count) {
-                return moviesService.getMovies(sortBy, (startPosition + count) / 20)
+                return moviesListService.getMovies(sortBy, (startPosition + count) / 20)
                         .flatMap(popularMoviesResult -> Observable.fromIterable(popularMoviesResult.getResults()))
                         .map(this::convertItemToUiModel)
                         .toList()

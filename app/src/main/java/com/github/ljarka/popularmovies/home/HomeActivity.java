@@ -1,7 +1,7 @@
 package com.github.ljarka.popularmovies.home;
 
-import static com.github.ljarka.popularmovies.home.network.MoviesService.POPULAR;
-import static com.github.ljarka.popularmovies.home.network.MoviesService.TOP_RATED;
+import static com.github.ljarka.popularmovies.home.network.MoviesListService.POPULAR;
+import static com.github.ljarka.popularmovies.home.network.MoviesListService.TOP_RATED;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -19,7 +19,7 @@ import android.widget.ViewAnimator;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.detail.DetailActivity;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
-import com.github.ljarka.popularmovies.home.network.MoviesService;
+import com.github.ljarka.popularmovies.home.network.MoviesListService;
 
 import javax.inject.Inject;
 
@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements MoviesRecyclerVie
         recyclerView.setAdapter(adapter);
     }
 
-    private void loadMovies(@MoviesService.SortBy String sortBy) {
+    private void loadMovies(@MoviesListService.SortBy String sortBy) {
         showProgress();
         viewModel.getMovies(sortBy).observe(this, pagedList -> {
             if (pagedList.isEmpty()) {

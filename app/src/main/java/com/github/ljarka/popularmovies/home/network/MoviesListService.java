@@ -13,7 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface MoviesService {
+public interface MoviesListService {
     @Retention(SOURCE)
     @StringDef({
             POPULAR, TOP_RATED

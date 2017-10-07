@@ -5,27 +5,28 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.paging.PagedList;
 
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
-import com.github.ljarka.popularmovies.home.network.MoviesService;
+import com.github.ljarka.popularmovies.home.network.MoviesListService;
 
 import javax.inject.Inject;
 
 public class HomeViewModel extends ViewModel {
 
-    private MoviesService moviesService;
+    private static final int PAGE_SIZE = 20;
+    private MoviesListService moviesListService;
 
     @Inject
-    HomeViewModel(MoviesService moviesService) {
-        this.moviesService = moviesService;
+    HomeViewModel(MoviesListService moviesListService) {
+        this.moviesListService = moviesListService;
     }
 
-    LiveData<PagedList<MovieItemUi>> getMovies(@MoviesService.SortBy String sortBy) {
-        return new MoviesDataProvider(sortBy, moviesService).create(0, createPagedList());
+    LiveData<PagedList<MovieItemUi>> getMovies(@MoviesListService.SortBy String sortBy) {
+        return new MoviesDataProvider(sortBy, moviesListService).create(0, createPagedList());
     }
 
     private PagedList.Config createPagedList() {
         return new PagedList.Config.Builder()
-                .setPageSize(20)
-                .setInitialLoadSizeHint(20)
+                .setPageSize(PAGE_SIZE)
+                .setInitialLoadSizeHint(PAGE_SIZE)
                 .setEnablePlaceholders(false)
                 .build();
     }

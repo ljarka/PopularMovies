@@ -1,6 +1,6 @@
 package com.github.ljarka.popularmovies.home;
 
-import com.github.ljarka.popularmovies.home.network.MoviesService;
+import com.github.ljarka.popularmovies.home.network.MoviesListService;
 
 import dagger.Module;
 import dagger.Provides;
@@ -10,7 +10,7 @@ import retrofit2.Retrofit;
 public class HomeActivityModule {
 
     @Provides
-    MoviesService providePopularMoviesService(Retrofit retrofit) {
-        return retrofit.create(MoviesService.class);
+    MoviesListService providePopularMoviesService(Retrofit retrofit) {
+        return retrofit.create(MoviesListService.class);
     }
 }

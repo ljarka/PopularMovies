@@ -1,5 +1,6 @@
 package com.github.ljarka.popularmovies.detail;
 
+import com.github.ljarka.popularmovies.detail.network.ReviewsService;
 import com.github.ljarka.popularmovies.detail.network.VideosService;
 
 import dagger.Module;
@@ -12,5 +13,10 @@ public class DetailActivityModule {
     @Provides
     VideosService providePopularMoviesService(Retrofit retrofit) {
         return retrofit.create(VideosService.class);
+    }
+
+    @Provides
+    ReviewsService provideReviewsService(Retrofit retrofit) {
+        return retrofit.create(ReviewsService.class);
     }
 }

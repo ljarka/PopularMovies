@@ -13,23 +13,22 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.github.ljarka.popularmovies.ImageBindingComponent;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.databinding.ActivityDetailBinding;
-import com.github.ljarka.popularmovies.detail.model.VideosRecyclerViewAdapter;
-import com.github.ljarka.popularmovies.detail.model.ui.VideoDescriptorUi;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.AsyncSubject;
 
 public class DetailActivity extends AppCompatActivity
         implements ImageBindingComponent.OnImageLoadedListener, VideosRecyclerViewAdapter.OnVideoClickListener {
@@ -46,6 +45,8 @@ public class DetailActivity extends AppCompatActivity
 
     private DetailViewModel viewModel;
     private VideosRecyclerViewAdapter videosRecyclerViewAdapter;
+    private ReviewsRecyclerViewAdapter reviewsRecyclerViewAdapter;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,18 +68,43 @@ public class DetailActivity extends AppCompatActivity
         videosRecyclerViewAdapter.setOnVideoClickListener(this);
 
         loadVideos();
+
+        reviewsRecyclerViewAdapter = new ReviewsRecyclerViewAdapter();
+        binding.reviewsRecyclerView.setAdapter(reviewsRecyclerViewAdapter);
+        binding.reviewsRecyclerView.setNestedScrollingEnabled(false);
+        loadReviews();
+    }
+
+    private void loadReviews() {
+        Disposable disposable = viewModel.getReviews(binding.getMovieItem().getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .toList()
+                .subscribe(items -> {
+                    reviewsRecyclerViewAdapter.setItems(items);
+                }, throwable -> {
+                    binding.reviewsRecyclerView.setVisibility(View.GONE);
+                });
+        compositeDisposable.add(disposable);
     }
 
     private void loadVideos() {
-        viewModel.getVideos(binding.getMovieItem().getId())
+        Disposable disposable = viewModel.getVideos(binding.getMovieItem().getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toList()
                 .subscribe(items -> {
                     videosRecyclerViewAdapter.setItems(items);
                 }, throwable -> {
-
+                    binding.moviesRecyclerView.setVisibility(View.GONE);
                 });
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
     }
 
     @Override

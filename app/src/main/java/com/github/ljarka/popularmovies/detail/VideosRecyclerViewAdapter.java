@@ -1,4 +1,4 @@
-package com.github.ljarka.popularmovies.detail.model;
+package com.github.ljarka.popularmovies.detail;
 
 import static java.util.Collections.emptyList;
 

@@ -60,6 +60,7 @@ public class DetailActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
         binding.setMovieItem(getIntent().getParcelableExtra(EXTRA_MOVIE_ITEM));
         supportPostponeEnterTransition();
 

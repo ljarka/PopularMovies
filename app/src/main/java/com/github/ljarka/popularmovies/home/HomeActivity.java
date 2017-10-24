@@ -6,13 +6,12 @@ import static com.github.ljarka.popularmovies.home.network.MoviesListService.TOP
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ViewAnimator;
 
@@ -46,6 +45,17 @@ public class HomeActivity extends AppCompatActivity implements MoviesRecyclerVie
         viewAnimator = findViewById(R.id.view_animator);
         errorView = findViewById(R.id.tv_loading_error);
         progressView = findViewById(R.id.progress_view);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (R.id.action_popular == item.getItemId()) {
+                loadMovies(POPULAR);
+                return true;
+            } else if (R.id.action_top_rated == item.getItemId()) {
+                loadMovies(TOP_RATED);
+                return true;
+            }
+            return false;
+        });
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
 
@@ -86,24 +96,6 @@ public class HomeActivity extends AppCompatActivity implements MoviesRecyclerVie
 
     private void showProgress() {
         viewAnimator.setDisplayedChild(viewAnimator.indexOfChild(progressView));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (R.id.action_popular == item.getItemId()) {
-            loadMovies(POPULAR);
-            return true;
-        } else if (R.id.action_top_rated == item.getItemId()) {
-            loadMovies(TOP_RATED);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -75,14 +75,13 @@
                     android:id="@+id/title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="38dp"
                     android:maxLines="2"
                     android:text="@{movieItem.title}"
                     android:textSize="24sp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/image"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     tools:layout_editor_absoluteX="180dp"
                     tools:text="Titanic" />
 
@@ -151,5 +150,24 @@
                     app:layoutManager="LinearLayoutManager" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/round_drawable"
+            android:elevation="4dp"
+            app:layout_anchor="@id/app_bar_layout"
+            app:layout_anchorGravity="bottom|right|end">
+
+            <com.like.LikeButton
+                android:id="@+id/star_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                app:anim_scale_factor="2"
+                app:icon_size="28dp"
+                app:icon_type="heart" />
+        </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

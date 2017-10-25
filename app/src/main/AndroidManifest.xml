@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.ljarka.popularmovies">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,8 +23,14 @@
         <activity
             android:name=".detail.DetailActivity"
             android:parentActivityName=".home.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <provider
+            android:name=".favorites.MoviesProvider"
+            android:authorities="com.github.ljarka.movies"
+            android:exported="false"
+            android:protectionLevel="signature"
+            android:syncable="true" />
     </application>
 
 </manifest>

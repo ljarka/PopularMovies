@@ -6,9 +6,10 @@ import static com.github.ljarka.popularmovies.favorites.MoviesProvider.PATH_MOVI
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
+import android.provider.BaseColumns;
 
 public class MoviesContract {
-    interface FavoriteMovies extends android.provider.BaseColumns {
+    interface FavoriteMovies extends BaseColumns {
         Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
 
         String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_URI + "/" + PATH_MOVIE;

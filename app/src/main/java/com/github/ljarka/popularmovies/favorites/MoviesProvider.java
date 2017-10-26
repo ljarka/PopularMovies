@@ -26,15 +26,15 @@ public class MoviesProvider extends ContentProvider {
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = CONTENT_AUTHORITY;
-        matcher.addURI(authority, TABLE_NAME, MOVIES);
-        matcher.addURI(authority, TABLE_NAME + "/#", MOVIE_ID);
+        matcher.addURI(authority, PATH_MOVIE, MOVIES);
+        matcher.addURI(authority, PATH_MOVIE + "/#", MOVIE_ID);
         return matcher;
     }
 
     @Override
     public boolean onCreate() {
         moviesDatabaseHelper = new MoviesDatabaseHelper(getContext());
-        return false;
+        return true;
     }
 
     @Nullable
@@ -82,7 +82,7 @@ public class MoviesProvider extends ContentProvider {
         final SQLiteDatabase db = moviesDatabaseHelper.getWritableDatabase();
         Uri returnUri;
         switch (uriMatcher.match(uri)) {
-            case MOVIES: {
+            case MOVIE_ID: {
                 long id = db.insert(MoviesContract.FavoriteMovies.TABLE_NAME, null, contentValues);
                 if (id > 0) {
                     returnUri = MoviesContract.FavoriteMovies.buildMovieUri(id);
@@ -106,13 +106,10 @@ public class MoviesProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case MOVIES:
                 numDeleted = db.delete(MoviesContract.FavoriteMovies.TABLE_NAME, selection, selectionArgs);
-                db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '"
-                        + MoviesContract.FavoriteMovies.TABLE_NAME
-                        + "'");
                 break;
             case MOVIE_ID:
-                numDeleted = db.delete(MoviesContract.FavoriteMovies.TABLE_NAME,
-                        MoviesContract.FavoriteMovies._ID + " = ?", new String[] {String.valueOf(ContentUris.parseId(uri))});
+                numDeleted = db.delete(MoviesContract.FavoriteMovies.TABLE_NAME, MoviesContract.FavoriteMovies._ID + " = ?",
+                        new String[] {String.valueOf(ContentUris.parseId(uri))});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -132,8 +129,7 @@ public class MoviesProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case MOVIES: {
-                numUpdated = db.update(MoviesContract.FavoriteMovies.TABLE_NAME, contentValues, selection,
-                        selectionArgs);
+                numUpdated = db.update(MoviesContract.FavoriteMovies.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             }
             case MOVIE_ID: {

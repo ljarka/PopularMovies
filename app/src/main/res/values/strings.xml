@@ -5,4 +5,7 @@
     <string name="favorites">Favorites</string>
     <string name="imageTransitionName">imageTransition</string>
     <string name="loading_error">Loading error</string>
+    <string name="movie_added_to_favorites">"Movie \"%s"\" added to favorites"</string>
+    <string name="move_removed_from_favorites">"Movie \"%s"\" removed from favorites"</string>
+    <string name="show_button">show</string>
 </resources>

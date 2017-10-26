@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MoviesDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "movies";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public MoviesDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,8 +23,8 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createFavoritesMoviesTable = "CREATE TABLE " + TABLE_NAME +
-                "(" + ID + " INTEGER PRIMARY KEY," + TITLE + " TEXT, " + POSTER + " TEXT, " + OVERVIEW + "TEXT, " + RELEASE_DATE
-                + "TEXT, " + BACKDROP + "TEXT," +
+                "(" + ID + " INTEGER," + TITLE + " TEXT, " + POSTER + " TEXT, " + OVERVIEW + " TEXT, " + RELEASE_DATE
+                + " TEXT, " + BACKDROP + " TEXT" + "UNIQUE(" +ID +  ") ON CONFLICT REPLACE"+
                 ")";
 
         db.execSQL(createFavoritesMoviesTable);

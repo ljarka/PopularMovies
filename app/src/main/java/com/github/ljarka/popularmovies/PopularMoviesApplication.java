@@ -3,6 +3,8 @@ package com.github.ljarka.popularmovies;
 import android.app.Activity;
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
@@ -20,6 +22,7 @@ public class PopularMoviesApplication extends Application implements HasActivity
                 .application(this)
                 .build()
                 .inject(this);
+        Stetho.initializeWithDefaults(this);
     }
 
     @Override

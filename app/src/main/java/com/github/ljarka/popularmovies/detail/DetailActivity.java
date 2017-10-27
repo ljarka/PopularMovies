@@ -23,7 +23,7 @@ import com.bumptech.glide.Glide;
 import com.github.ljarka.popularmovies.ImageBindingComponent;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.databinding.ActivityDetailBinding;
-import com.github.ljarka.popularmovies.favorites.MoviesContract;
+import com.github.ljarka.popularmovies.home.favorites.MoviesContract;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
 import com.like.LikeButton;
 import com.like.OnLikeListener;

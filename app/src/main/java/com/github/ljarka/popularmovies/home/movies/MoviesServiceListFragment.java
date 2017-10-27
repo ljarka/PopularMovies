@@ -1,4 +1,4 @@
-package com.github.ljarka.popularmovies.home;
+package com.github.ljarka.popularmovies.home.movies;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ViewAnimator;
 
+import com.github.ljarka.popularmovies.OnMovieItemClickListener;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.home.network.MoviesListService;
 
@@ -26,23 +27,22 @@ public class MoviesServiceListFragment extends Fragment {
     private static final String MOVIES_SORT_TYPE = "movies_sort_type";
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-    private MoviesListFragmentViewModel viewModel;
-    private MoviesRecyclerViewAdapter adapter;
+    private MoviesServiceListFragmentViewModel viewModel;
+    private MoviesServiceRecyclerViewAdapter adapter;
     private ViewAnimator viewAnimator;
     private View errorView;
     private View progressView;
     private RecyclerView recyclerView;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private MoviesRecyclerViewAdapter.OnMovieItemClickListener onMovieItemClickListener;
+    private OnMovieItemClickListener onMovieItemClickListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof MoviesRecyclerViewAdapter.OnMovieItemClickListener) {
-            onMovieItemClickListener = (MoviesRecyclerViewAdapter.OnMovieItemClickListener) context;
+        if (context instanceof OnMovieItemClickListener) {
+            onMovieItemClickListener = (OnMovieItemClickListener) context;
         } else {
-            throw new ClassCastException("Parent activity has to implement "
-                    + MoviesRecyclerViewAdapter.OnMovieItemClickListener.class.getSimpleName());
+            throw new ClassCastException("Parent activity has to implement " + OnMovieItemClickListener.class.getSimpleName());
         }
     }
 
@@ -50,7 +50,7 @@ public class MoviesServiceListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidSupportInjection.inject(this);
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MoviesListFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MoviesServiceListFragmentViewModel.class);
     }
 
     @Nullable
@@ -74,7 +74,7 @@ public class MoviesServiceListFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.span_count),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
-        adapter = new MoviesRecyclerViewAdapter();
+        adapter = new MoviesServiceRecyclerViewAdapter();
         adapter.setOnMovieItemClickListener(onMovieItemClickListener);
         recyclerView.setAdapter(adapter);
     }

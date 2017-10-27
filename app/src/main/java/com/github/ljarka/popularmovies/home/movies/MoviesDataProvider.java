@@ -1,4 +1,4 @@
-package com.github.ljarka.popularmovies.home;
+package com.github.ljarka.popularmovies.home.movies;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 

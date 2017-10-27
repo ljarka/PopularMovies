@@ -9,12 +9,15 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.github.ljarka.popularmovies.OnMovieItemClickListener;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.detail.DetailActivity;
+import com.github.ljarka.popularmovies.home.favorites.FavoritesFragment;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
+import com.github.ljarka.popularmovies.home.movies.MoviesServiceListFragment;
 import com.github.ljarka.popularmovies.home.network.MoviesListService;
 
-public class HomeActivity extends AppCompatActivity implements MoviesRecyclerViewAdapter.OnMovieItemClickListener {
+public class HomeActivity extends AppCompatActivity implements OnMovieItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +32,19 @@ public class HomeActivity extends AppCompatActivity implements MoviesRecyclerVie
             } else if (R.id.action_top_rated == item.getItemId()) {
                 loadMoviesFromService(TOP_RATED);
                 return true;
+            } else if (R.id.action_favorites == item.getItemId()) {
+                loadFavoriteMovies();
+                return true;
             }
             return false;
         });
 
         bottomNavigationView.setSelectedItemId(R.id.action_popular);
+    }
+
+    private void loadFavoriteMovies() {
+        FavoritesFragment favoritesFragment = FavoritesFragment.createInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, favoritesFragment).commit();
     }
 
     private void loadMoviesFromService(@MoviesListService.SortBy String movieType) {

@@ -1,6 +1,4 @@
-package com.github.ljarka.popularmovies.favorites;
-
-import static com.github.ljarka.popularmovies.favorites.MoviesContract.FavoriteMovies.TABLE_NAME;
+package com.github.ljarka.popularmovies.home.favorites;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -44,12 +42,12 @@ public class MoviesProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case MOVIES: {
                 retCursor = moviesDatabaseHelper.getReadableDatabase()
-                        .query(TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                        .query(MoviesContract.FavoriteMovies.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 return retCursor;
             }
             case MOVIE_ID: {
                 retCursor = moviesDatabaseHelper.getReadableDatabase()
-                        .query(TABLE_NAME, projection, MoviesContract.FavoriteMovies._ID + " = ?",
+                        .query(MoviesContract.FavoriteMovies.TABLE_NAME, projection, MoviesContract.FavoriteMovies._ID + " = ?",
                                 new String[] {String.valueOf(ContentUris.parseId(uri))}, null, null, sortOrder);
                 return retCursor;
             }

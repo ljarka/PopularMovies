@@ -1,4 +1,4 @@
-package com.github.ljarka.popularmovies.home;
+package com.github.ljarka.popularmovies.home.movies;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
@@ -9,13 +9,13 @@ import com.github.ljarka.popularmovies.home.network.MoviesListService;
 
 import javax.inject.Inject;
 
-public class MoviesListFragmentViewModel extends ViewModel {
+public class MoviesServiceListFragmentViewModel extends ViewModel {
 
     private static final int PAGE_SIZE = 20;
     private MoviesListService moviesListService;
 
     @Inject
-    MoviesListFragmentViewModel(MoviesListService moviesListService) {
+    MoviesServiceListFragmentViewModel(MoviesListService moviesListService) {
         this.moviesListService = moviesListService;
     }
 

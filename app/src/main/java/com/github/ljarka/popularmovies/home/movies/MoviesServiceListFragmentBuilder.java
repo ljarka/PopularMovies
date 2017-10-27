@@ -1,4 +1,4 @@
-package com.github.ljarka.popularmovies.home;
+package com.github.ljarka.popularmovies.home.movies;
 
 import android.arch.lifecycle.ViewModel;
 
@@ -10,13 +10,13 @@ import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoMap;
 
 @Module(includes = MoviesListFragmentModule.class)
-public abstract class MoviesListFragmentBuilder {
+public abstract class MoviesServiceListFragmentBuilder {
 
     @ContributesAndroidInjector(modules = MoviesListFragmentModule.class)
     abstract MoviesServiceListFragment bindMoviesListFragment();
 
     @Binds
     @IntoMap
-    @ViewModelKey(MoviesListFragmentViewModel.class)
-    abstract ViewModel bindMoviesListFragmentViewModel(MoviesListFragmentViewModel homeViewModel);
+    @ViewModelKey(MoviesServiceListFragmentViewModel.class)
+    abstract ViewModel bindMoviesListFragmentViewModel(MoviesServiceListFragmentViewModel homeViewModel);
 }

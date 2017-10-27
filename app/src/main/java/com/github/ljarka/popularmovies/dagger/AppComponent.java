@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.github.ljarka.popularmovies.PopularMoviesApplication;
 import com.github.ljarka.popularmovies.detail.DetailActivityBuilder;
-import com.github.ljarka.popularmovies.home.MoviesListFragmentBuilder;
+import com.github.ljarka.popularmovies.home.movies.MoviesServiceListFragmentBuilder;
 
 import javax.inject.Singleton;
 
@@ -15,7 +15,7 @@ import dagger.android.AndroidInjectionModule;
 @Singleton
 @Component(modules = {
         AndroidInjectionModule.class, AppModule.class, ViewModelBuilder.class, DetailActivityBuilder.class,
-        MoviesListFragmentBuilder.class
+        MoviesServiceListFragmentBuilder.class
 })
 public interface AppComponent {
 

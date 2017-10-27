@@ -34,7 +34,7 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
     }
 
     class ReviewsViewHolder extends RecyclerView.ViewHolder {
-        ReviewItemBinding binding;
+        final ReviewItemBinding binding;
 
         public ReviewsViewHolder(ReviewItemBinding reviewItemBinding) {
             super(reviewItemBinding.getRoot());

@@ -1,4 +1,4 @@
-package com.github.ljarka.popularmovies.home;
+package com.github.ljarka.popularmovies.home.movies;
 
 import android.arch.paging.PagedListAdapter;
 import android.support.annotation.NonNull;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.github.ljarka.popularmovies.GlideApp;
+import com.github.ljarka.popularmovies.OnMovieItemClickListener;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
 
@@ -17,10 +18,8 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
-public class MoviesRecyclerViewAdapter extends PagedListAdapter<MovieItemUi, MoviesRecyclerViewAdapter.MoviesViewHolder> {
-    public interface OnMovieItemClickListener {
-        void onMovieItemClick(MovieItemUi movieItemUi, View view);
-    }
+public class MoviesServiceRecyclerViewAdapter
+        extends PagedListAdapter<MovieItemUi, MoviesServiceRecyclerViewAdapter.MoviesViewHolder> {
 
     private static final OnMovieItemClickListener EMPTY_LISTENER = (movieItemUi, view) -> {
         //empty
@@ -28,7 +27,7 @@ public class MoviesRecyclerViewAdapter extends PagedListAdapter<MovieItemUi, Mov
 
     private OnMovieItemClickListener listener = EMPTY_LISTENER;
 
-    public MoviesRecyclerViewAdapter() {
+    public MoviesServiceRecyclerViewAdapter() {
         super(new MyDiffCallback());
     }
 
@@ -47,7 +46,7 @@ public class MoviesRecyclerViewAdapter extends PagedListAdapter<MovieItemUi, Mov
     }
 
     class MoviesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView image;
+        final ImageView image;
 
         MoviesViewHolder(View itemView) {
             super(itemView);

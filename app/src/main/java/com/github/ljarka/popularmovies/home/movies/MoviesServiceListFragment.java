@@ -82,7 +82,7 @@ public class MoviesServiceListFragment extends Fragment {
     private void loadList(@MoviesListService.SortBy String sortBy) {
         showProgress();
         viewModel.getMovies(sortBy).observe(this, pagedList -> {
-            if (pagedList.isEmpty()) {
+            if (pagedList == null || pagedList.isEmpty()) {
                 showError();
             } else {
                 showContent();

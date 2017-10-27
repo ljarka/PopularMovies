@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<ViewAnimator
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_animator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ViewAnimator
-        android:id="@+id/view_animator"
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:id="@+id/progress_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_loading_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/loading_error"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ProgressBar
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:id="@+id/progress_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <TextView
-            android:id="@+id/tv_loading_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/loading_error"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </ViewAnimator>
-</FrameLayout>
+        android:layout_height="match_parent" />
+</ViewAnimator>
 

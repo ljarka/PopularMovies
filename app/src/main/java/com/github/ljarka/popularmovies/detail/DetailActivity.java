@@ -177,11 +177,8 @@ public class DetailActivity extends AppCompatActivity
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toList()
-                .subscribe(items -> {
-                    reviewsRecyclerViewAdapter.setItems(items);
-                }, throwable -> {
-                    binding.reviewsRecyclerView.setVisibility(View.GONE);
-                });
+                .subscribe(items -> reviewsRecyclerViewAdapter.setItems(items),
+                        throwable -> binding.reviewsRecyclerView.setVisibility(View.GONE));
         compositeDisposable.add(disposable);
     }
 
@@ -190,11 +187,8 @@ public class DetailActivity extends AppCompatActivity
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toList()
-                .subscribe(items -> {
-                    trailersRecyclerViewAdapter.setItems(items);
-                }, throwable -> {
-                    binding.moviesRecyclerView.setVisibility(View.GONE);
-                });
+                .subscribe(items -> trailersRecyclerViewAdapter.setItems(items),
+                        throwable -> binding.moviesRecyclerView.setVisibility(View.GONE));
         compositeDisposable.add(disposable);
     }
 

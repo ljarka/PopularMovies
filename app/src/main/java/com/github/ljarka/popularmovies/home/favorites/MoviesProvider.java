@@ -37,12 +37,13 @@ public class MoviesProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
         switch (uriMatcher.match(uri)) {
             case MOVIES: {
                 retCursor = moviesDatabaseHelper.getReadableDatabase()
-                        .query(MoviesContract.FavoriteMovies.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                        .query(MoviesContract.FavoriteMovies.TABLE_NAME, projection, selection, selectionArgs, null, null,
+                                sortOrder);
                 return retCursor;
             }
             case MOVIE_ID: {
@@ -98,7 +99,7 @@ public class MoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = moviesDatabaseHelper.getWritableDatabase();
         int numDeleted;
         switch (uriMatcher.match(uri)) {
@@ -117,9 +118,9 @@ public class MoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = moviesDatabaseHelper.getWritableDatabase();
-        int numUpdated = 0;
+        int numUpdated;
 
         if (contentValues == null) {
             throw new IllegalArgumentException("Cannot have null content values");

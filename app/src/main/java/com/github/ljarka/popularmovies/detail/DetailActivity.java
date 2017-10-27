@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.github.ljarka.popularmovies.ImageBindingComponent;
 import com.github.ljarka.popularmovies.R;
 import com.github.ljarka.popularmovies.databinding.ActivityDetailBinding;
+import com.github.ljarka.popularmovies.home.HomeActivity;
 import com.github.ljarka.popularmovies.home.favorites.MoviesContract;
 import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
 import com.like.LikeButton;
@@ -137,9 +138,8 @@ public class DetailActivity extends AppCompatActivity
         contentValues.put(MoviesContract.FavoriteMovies.USER_RATING, movieItem.getUserRating());
         getContentResolver().insert(MoviesContract.FavoriteMovies.buildMovieUri(movieItem.getId()), contentValues);
         Snackbar.make(binding.getRoot(), getString(R.string.movie_added_to_favorites, movieItem.getTitle()), Snackbar.LENGTH_LONG)
-                .setAction(R.string.show_button, v -> {
-
-                })
+                .setAction(R.string.show_button,
+                        v -> startActivity(HomeActivity.createStartIntent(DetailActivity.this, HomeActivity.FAVORITE_MOVIES)))
                 .show();
     }
 

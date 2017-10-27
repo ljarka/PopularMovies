@@ -15,7 +15,7 @@ import com.github.ljarka.popularmovies.detail.model.ui.VideoDescriptorUi;
 import java.util.List;
 import java.util.Optional;
 
-public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecyclerViewAdapter.VideosViewHolder> {
+public class TrailersRecyclerViewAdapter extends RecyclerView.Adapter<TrailersRecyclerViewAdapter.TrailersViewHolder> {
     public interface OnVideoClickListener {
         void onVideoClick(Uri videoUri);
     }
@@ -28,12 +28,12 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
     private OnVideoClickListener onVideoClickListener = EMPTY_LISTENER;
 
     @Override
-    public VideosViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VideosViewHolder(VideoItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+    public TrailersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new TrailersViewHolder(VideoItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(VideosViewHolder holder, int position) {
+    public void onBindViewHolder(TrailersViewHolder holder, int position) {
         holder.videoItemBinding.setVideo(items.get(position));
     }
 
@@ -47,14 +47,18 @@ public class VideosRecyclerViewAdapter extends RecyclerView.Adapter<VideosRecycl
         notifyDataSetChanged();
     }
 
+    public List<VideoDescriptorUi> getItems() {
+        return items;
+    }
+
     public void setOnVideoClickListener(@Nullable OnVideoClickListener onVideoClickListener) {
         this.onVideoClickListener = Optional.ofNullable(onVideoClickListener).orElse(EMPTY_LISTENER);
     }
 
-    class VideosViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class TrailersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         VideoItemBinding videoItemBinding;
 
-        public VideosViewHolder(VideoItemBinding binding) {
+        public TrailersViewHolder(VideoItemBinding binding) {
             super(binding.getRoot());
             this.videoItemBinding = binding;
             binding.getRoot().setOnClickListener(this);

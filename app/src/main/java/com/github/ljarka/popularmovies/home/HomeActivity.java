@@ -35,6 +35,8 @@ public class HomeActivity extends AppCompatActivity implements OnMovieItemClickL
     public static final String POPULAR_MOVIES = "popular";
     public static final String TOP_RATED_MOVIES = "top_rated";
     public static final String FAVORITE_MOVIES = "favorites";
+    private static final String EXTRA_SELECTED_LIST_TYPE = "selected_list_type";
+    private String currentlySelectedListType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,25 +44,55 @@ public class HomeActivity extends AppCompatActivity implements OnMovieItemClickL
         setContentView(R.layout.activity_home);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            if (R.id.action_popular == item.getItemId()) {
-                loadMoviesFromService(MoviesListService.POPULAR);
-                setTitle(getString(R.string.popular));
-                return true;
-            } else if (R.id.action_top_rated == item.getItemId()) {
-                loadMoviesFromService(MoviesListService.TOP_RATED);
-                setTitle(getString(R.string.top_rated));
-                return true;
-            } else if (R.id.action_favorites == item.getItemId()) {
-                loadFavoriteMovies();
-                setTitle(getString(R.string.favorites));
-                return true;
-            }
-            return false;
-        });
 
-        bottomNavigationView.setSelectedItemId(mapIntentParameterToActionId(
-                Optional.ofNullable(getIntent().getStringExtra(Intent.EXTRA_TEXT)).orElse(POPULAR_MOVIES)));
+        if (savedInstanceState != null) {
+            currentlySelectedListType =
+                    Optional.ofNullable(savedInstanceState.getString(EXTRA_SELECTED_LIST_TYPE)).orElse(POPULAR_MOVIES);
+            bottomNavigationView.setSelectedItemId(mapIntentParameterToActionId(currentlySelectedListType));
+        } else {
+            currentlySelectedListType = Optional.ofNullable(getIntent().getStringExtra(Intent.EXTRA_TEXT)).orElse(POPULAR_MOVIES);
+            bottomNavigationView.setSelectedItemId(mapIntentParameterToActionId(currentlySelectedListType));
+            loadBottomNavigationItemData(mapIntentParameterToActionId(currentlySelectedListType));
+        }
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> loadBottomNavigationItemData(item.getItemId()));
+    }
+
+    private boolean loadBottomNavigationItemData(@IdRes int itemId) {
+        if (R.id.action_popular == itemId) {
+            selectPopularMovies();
+            return true;
+        } else if (R.id.action_top_rated == itemId) {
+            selectTopRatedMovies();
+            return true;
+        } else if (R.id.action_favorites == itemId) {
+            selectFavoriteMovies();
+            return true;
+        }
+        return false;
+    }
+
+    private void selectFavoriteMovies() {
+        loadFavoriteMovies();
+        setTitle(getString(R.string.favorites));
+        currentlySelectedListType = FAVORITE_MOVIES;
+    }
+
+    private void selectTopRatedMovies() {
+        loadMoviesFromService(MoviesListService.TOP_RATED);
+        setTitle(getString(R.string.top_rated));
+        currentlySelectedListType = TOP_RATED_MOVIES;
+    }
+
+    private void selectPopularMovies() {
+        loadMoviesFromService(MoviesListService.POPULAR);
+        setTitle(getString(R.string.popular));
+        currentlySelectedListType = POPULAR_MOVIES;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(EXTRA_SELECTED_LIST_TYPE, currentlySelectedListType);
     }
 
     private void loadFavoriteMovies() {

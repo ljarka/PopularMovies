@@ -28,6 +28,10 @@ public class ReviewsRecyclerViewAdapter extends RecyclerView.Adapter<ReviewsRecy
         return reviews.size();
     }
 
+    public List<ReviewUi> getItems() {
+        return reviews;
+    }
+
     public void setItems(List<ReviewUi> reviews) {
         this.reviews = reviews;
         notifyDataSetChanged();

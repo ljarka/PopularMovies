@@ -13,6 +13,8 @@ public class MoviesServiceListFragmentViewModel extends ViewModel {
 
     private static final int PAGE_SIZE = 20;
     private MoviesListService moviesListService;
+    private LiveData<PagedList<MovieItemUi>> moviesLiveData;
+    private String currentSortType;
 
     @Inject
     MoviesServiceListFragmentViewModel(MoviesListService moviesListService) {
@@ -20,7 +22,11 @@ public class MoviesServiceListFragmentViewModel extends ViewModel {
     }
 
     LiveData<PagedList<MovieItemUi>> getMovies(@MoviesListService.SortBy String sortBy) {
-        return new MoviesDataProvider(sortBy, moviesListService).create(0, createPagedList());
+        if (moviesLiveData == null && !sortBy.equals(currentSortType)) {
+            moviesLiveData = new MoviesDataProvider(sortBy, moviesListService).create(0, createPagedList());
+            currentSortType = sortBy;
+        }
+        return moviesLiveData;
     }
 
     private PagedList.Config createPagedList() {

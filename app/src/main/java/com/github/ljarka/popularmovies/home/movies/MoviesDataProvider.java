@@ -84,4 +84,8 @@ class MoviesDataProvider extends LivePagedListProvider<Integer, MovieItemUi> {
             }
         };
     }
+
+    public String getSortBy() {
+        return sortBy;
+    }
 }

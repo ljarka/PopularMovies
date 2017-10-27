@@ -29,6 +29,8 @@ import com.github.ljarka.popularmovies.home.model.ui.MovieItemUi;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
@@ -38,8 +40,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class DetailActivity extends AppCompatActivity
-        implements ImageBindingComponent.OnImageLoadedListener, VideosRecyclerViewAdapter.OnVideoClickListener {
+        implements ImageBindingComponent.OnImageLoadedListener, TrailersRecyclerViewAdapter.OnVideoClickListener {
     private static final String EXTRA_MOVIE_ITEM = "extra_movie_item";
+    private static final String EXTRA_REVIEWS = "extra_reviews";
+    private static final String EXTRA_TRAILERS = "extra_trailers";
+    private static final String EXTRA_FAVORITE = "extra_favorite";
+
     private ActivityDetailBinding binding;
 
     @BindingAdapter("imageUri")
@@ -51,7 +57,7 @@ public class DetailActivity extends AppCompatActivity
     ViewModelProvider.Factory viewModelFactory;
 
     private DetailViewModel viewModel;
-    private VideosRecyclerViewAdapter videosRecyclerViewAdapter;
+    private TrailersRecyclerViewAdapter trailersRecyclerViewAdapter;
     private ReviewsRecyclerViewAdapter reviewsRecyclerViewAdapter;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MovieItemUi movieItem;
@@ -68,26 +74,49 @@ public class DetailActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-
-        movieItem = getIntent().getParcelableExtra(EXTRA_MOVIE_ITEM);
-        binding.setMovieItem(movieItem);
-        supportPostponeEnterTransition();
-
-        videosRecyclerViewAdapter = new VideosRecyclerViewAdapter();
-        binding.moviesRecyclerView.setAdapter(videosRecyclerViewAdapter);
-        videosRecyclerViewAdapter.setOnVideoClickListener(this);
-
-        loadVideos();
-
         reviewsRecyclerViewAdapter = new ReviewsRecyclerViewAdapter();
         binding.reviewsRecyclerView.setAdapter(reviewsRecyclerViewAdapter);
         binding.reviewsRecyclerView.setNestedScrollingEnabled(false);
-        loadReviews();
-        initStarButton();
+
+        trailersRecyclerViewAdapter = new TrailersRecyclerViewAdapter();
+        binding.moviesRecyclerView.setAdapter(trailersRecyclerViewAdapter);
+        trailersRecyclerViewAdapter.setOnVideoClickListener(this);
+
+        if (savedInstanceState == null) {
+            loadFreshData();
+        } else {
+            restoreFromSavedInstanceState(savedInstanceState);
+        }
     }
 
-    private void initStarButton() {
-        binding.starButton.setLiked(isFavorite());
+    private void restoreFromSavedInstanceState(Bundle savedInstanceState) {
+        movieItem = savedInstanceState.getParcelable(EXTRA_MOVIE_ITEM);
+        binding.setMovieItem(movieItem);
+        initStarButton(savedInstanceState.getBoolean(EXTRA_FAVORITE));
+        trailersRecyclerViewAdapter.setItems(savedInstanceState.getParcelableArrayList(EXTRA_TRAILERS));
+        reviewsRecyclerViewAdapter.setItems(savedInstanceState.getParcelableArrayList(EXTRA_REVIEWS));
+    }
+
+    private void loadFreshData() {
+        movieItem = getIntent().getParcelableExtra(EXTRA_MOVIE_ITEM);
+        binding.setMovieItem(movieItem);
+        supportPostponeEnterTransition();
+        loadVideos();
+        loadReviews();
+        initStarButton(isFavorite());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_MOVIE_ITEM, movieItem);
+        outState.putBoolean(EXTRA_FAVORITE, binding.starButton.isLiked());
+        outState.putParcelableArrayList(EXTRA_TRAILERS, new ArrayList<>(trailersRecyclerViewAdapter.getItems()));
+        outState.putParcelableArrayList(EXTRA_REVIEWS, new ArrayList<>(reviewsRecyclerViewAdapter.getItems()));
+    }
+
+    private void initStarButton(boolean isFavorite) {
+        binding.starButton.setLiked(isFavorite);
         binding.starButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -162,7 +191,7 @@ public class DetailActivity extends AppCompatActivity
                 .observeOn(AndroidSchedulers.mainThread())
                 .toList()
                 .subscribe(items -> {
-                    videosRecyclerViewAdapter.setItems(items);
+                    trailersRecyclerViewAdapter.setItems(items);
                 }, throwable -> {
                     binding.moviesRecyclerView.setVisibility(View.GONE);
                 });

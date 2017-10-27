@@ -7,7 +7,7 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 
 @Module
-public class HomeActivityModule {
+public class MoviesListFragmentModule {
 
     @Provides
     MoviesListService providePopularMoviesService(Retrofit retrofit) {

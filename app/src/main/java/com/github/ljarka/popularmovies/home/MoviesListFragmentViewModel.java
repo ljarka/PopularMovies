@@ -9,13 +9,13 @@ import com.github.ljarka.popularmovies.home.network.MoviesListService;
 
 import javax.inject.Inject;
 
-public class HomeViewModel extends ViewModel {
+public class MoviesListFragmentViewModel extends ViewModel {
 
     private static final int PAGE_SIZE = 20;
     private MoviesListService moviesListService;
 
     @Inject
-    HomeViewModel(MoviesListService moviesListService) {
+    MoviesListFragmentViewModel(MoviesListService moviesListService) {
         this.moviesListService = moviesListService;
     }
 
@@ -24,8 +24,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     private PagedList.Config createPagedList() {
-        return new PagedList.Config.Builder()
-                .setPageSize(PAGE_SIZE)
+        return new PagedList.Config.Builder().setPageSize(PAGE_SIZE)
                 .setInitialLoadSizeHint(PAGE_SIZE)
                 .setEnablePlaceholders(false)
                 .build();

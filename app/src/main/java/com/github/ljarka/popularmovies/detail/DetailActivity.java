@@ -134,6 +134,7 @@ public class DetailActivity extends AppCompatActivity
         contentValues.put(MoviesContract.FavoriteMovies.POSTER, movieItem.getPoster());
         contentValues.put(MoviesContract.FavoriteMovies.TITLE, movieItem.getTitle());
         contentValues.put(MoviesContract.FavoriteMovies.RELEASE_DATE, movieItem.getReleaseDate());
+        contentValues.put(MoviesContract.FavoriteMovies.USER_RATING, movieItem.getUserRating());
         getContentResolver().insert(MoviesContract.FavoriteMovies.buildMovieUri(movieItem.getId()), contentValues);
         Snackbar.make(binding.getRoot(), getString(R.string.movie_added_to_favorites, movieItem.getTitle()), Snackbar.LENGTH_LONG)
                 .setAction(R.string.show_button, v -> {
